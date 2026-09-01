@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"os"
-	"os/user"
 	"path/filepath"
 )
 
@@ -34,32 +33,7 @@ func Read() (Config, error) {
 	return config, nil
 }
 
-func (cfg *Config) Set() error {
-	currentUser, err := user.Current()
-	if err != nil {
-		return fmt.Errorf("error getting current user: %w", err)
-	}
-
-	cfg.CurrentUserName = currentUser.Username
-	if err := write(cfg); err != nil {
-		return fmt.Errorf("error writing in config file: %w", err)
-	}
-	return nil
-}
-
-
-func getConfigFilePath() (string, error) {
-	homeDir, err := os.UserHomeDir()
-	if err != nil {
-		return "", fmt.Errorf("error getting home directory: %w", err)
-	}
-
-	path := filepath.Join(homeDir, configFileName)
-
-	return path, nil
-}
-
-func write(cfg *Config) error {
+func (cfg *Config) Save() error {
 	path, err := getConfigFilePath()
 	if err != nil {
 		return fmt.Errorf("error getting config file path: %w", err)
@@ -70,9 +44,20 @@ func write(cfg *Config) error {
 		return fmt.Errorf("error marshalling config: %w", err)
 	}
 
-	if err := os.WriteFile(path, data, 0666); err != nil {
+	if err := os.WriteFile(path, data, 0644); err != nil {
 		return fmt.Errorf("error writing to config file: %w", err)
 	}
 
 	return nil
+}
+
+func getConfigFilePath() (string, error) {
+	homeDir, err := os.UserHomeDir()
+	if err != nil {
+		return "", fmt.Errorf("error getting home directory: %w", err)
+	}
+
+	path := filepath.Join(homeDir, configFileName)
+
+	return path, nil
 }
