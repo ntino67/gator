@@ -97,3 +97,22 @@ func handlerReset(s *state, cmd command) error {
 	fmt.Print("Resetted the database")
 	return s.dbQueries.ResetUser(ctx)
 }
+
+func handlerUsers(s *state, cmd command) error {
+	ctx := context.Background()
+	
+	usrs, err := s.dbQueries.GetUsers(ctx)
+	if err != nil {
+		return fmt.Errorf("error getting users: %w", err)
+	}
+
+	for _, usr := range usrs {
+		if usr.Name == s.cfg.CurrentUserName {
+			fmt.Printf("* %s (current)\n", usr.Name)
+			continue
+		}
+		fmt.Printf("* %s\n", usr.Name)
+	}
+
+	return nil
+}

@@ -39,6 +39,7 @@ func main() {
 	cmds.register("login", handlerLogin)
 	cmds.register("register", handlerRegister)
 	cmds.register("reset", handlerReset)
+	cmds.register("users", handlerUsers)
 
 	if len(os.Args) < 2 {
 		log.Fatalf("Additional argmuments needed, expected: %d, provided: %d", 2, len(os.Args))
