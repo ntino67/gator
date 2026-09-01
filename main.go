@@ -6,7 +6,7 @@ import (
 	"log"
 	"os"
 
-	"github.com/ntino67/blog-aggregator/internal/config"
+	"github.com/ntino67/gator/internal/config"
 )
 
 func main() {

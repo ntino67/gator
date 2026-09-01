@@ -1,3 +1,3 @@
-module github.com/ntino67/blog-aggregator
+module github.com/ntino67/gator
 
 go 1.27.0
