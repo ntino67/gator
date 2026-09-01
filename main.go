@@ -11,7 +11,7 @@ import (
 func main() {
 	cfg, err := config.Read()
 	if errors.Is(err, os.ErrNotExist) {
-		newCfg := config.Config{}
+		newCfg := config.Config{DbURL: "postgres://postgres:postgres@localhost:5432/gator?sslmode=disable"}
 		if err := newCfg.Save(); err != nil {
 			log.Fatalf("error creating new confing: %v", err)
 		}
