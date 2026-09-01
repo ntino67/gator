@@ -1,11 +1,15 @@
 package main
 
 import (
+	"database/sql"
 	"errors"
 	"log"
 	"os"
 
 	"github.com/ntino67/gator/internal/config"
+	"github.com/ntino67/gator/internal/database"
+
+	_ "github.com/lib/pq"
 )
 
 func main() {
@@ -20,12 +24,20 @@ func main() {
 		log.Fatalf("error reading the config file: %v", err)
 	}
 
-	s := state{cfg: &cfg}
+	db, err := sql.Open("postgres", cfg.DbURL)
+	if err != nil {
+		log.Fatalf("error opening the database")
+	}
+
+	dbQueries := database.New(db)
+
+	s := state{cfg: &cfg, dbQueries: dbQueries}
 
 	cmds := commands{registeredCommands: make(map[string]func(*state, command) error)}
 	
 	// When we add a command, we will register it here.
 	cmds.register("login", handlerLogin)
+	cmds.register("register", handlerRegister)
 
 	if len(os.Args) < 2 {
 		log.Fatalf("Additional argmuments needed, expected: %d, provided: %d", 2, len(os.Args))
@@ -36,6 +48,6 @@ func main() {
 	
 	cmd := command{name: name, args: args}
 	if err := cmds.run(&s, cmd); err != nil {
-		log.Fatalf("error running %s: %v", cmd.name, err)
+		log.Fatalf("error running the command: %v", err)
 	}
 }
