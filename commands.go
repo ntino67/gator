@@ -91,3 +91,9 @@ func handlerRegister(s *state, cmd command) error {
 
 	return nil
 }
+
+func handlerReset(s *state, cmd command) error {
+	ctx := context.Background()
+	fmt.Print("Resetted the database")
+	return s.dbQueries.ResetUser(ctx)
+}

@@ -38,6 +38,7 @@ func main() {
 	// When we add a command, we will register it here.
 	cmds.register("login", handlerLogin)
 	cmds.register("register", handlerRegister)
+	cmds.register("reset", handlerReset)
 
 	if len(os.Args) < 2 {
 		log.Fatalf("Additional argmuments needed, expected: %d, provided: %d", 2, len(os.Args))
