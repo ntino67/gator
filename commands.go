@@ -38,12 +38,8 @@ func handlerLogin(s *state, cmd command) error {
 	}
 
 	cfg := s.cfg
-	cfg.CurrentUserName = cmd.args[0]
+	cfg.SetUser(cmd.args[0])
 
-	if err := cfg.Save(); err != nil {
-		return fmt.Errorf("error saving: %w", err)
-	}
-	
 	fmt.Printf("User has been set to: %s", cfg.CurrentUserName)
 	return nil
 }

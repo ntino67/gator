@@ -51,6 +51,11 @@ func (cfg *Config) Save() error {
 	return nil
 }
 
+func (cfg *Config) SetUser(name string) error {
+	cfg.CurrentUserName = name
+	return cfg.Save()
+}
+
 func getConfigFilePath() (string, error) {
 	homeDir, err := os.UserHomeDir()
 	if err != nil {
